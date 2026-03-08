@@ -5,6 +5,8 @@ TagManager:
   serializedVersion: 3
   tags:
   - D_Key
+  - D_Head
+  - D_Tail
   layers:
   - Default
   - TransparentFX

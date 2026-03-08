@@ -1,0 +1,4 @@
+repository "rythm_game_saka/rythm_game_saka@33262163957084@cloud"
+  path "/"
+    br "/main"
+    co "/main"
