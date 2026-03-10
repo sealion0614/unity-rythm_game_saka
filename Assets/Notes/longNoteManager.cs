@@ -1,7 +1,7 @@
 using System.Collections;
 using UnityEngine;
 
-public class D_longNoteManager : MonoBehaviour
+public class longNoteManager : MonoBehaviour
 {
     public GameObject notePrefab;
     public Transform spawnPoint;
@@ -31,7 +31,7 @@ public class D_longNoteManager : MonoBehaviour
     {
         defaultHeight = shrink;
         GameObject note=Instantiate(notePrefab, spawnPoint.position, Quaternion.identity);
-        D_LongNoteMovement movement=note.GetComponent<D_LongNoteMovement>();
+        LongNoteMovement movement=note.GetComponent<LongNoteMovement>();
 
         movement.data = this;
         movement.SetMyScale(shrink);

@@ -2,10 +2,11 @@ using UnityEngine;
 using System.Collections;
 using NUnit.Framework.Constraints;
 
-public class D_shortNoteManager : MonoBehaviour
+public class ShortNoteManager : MonoBehaviour
 {
     public GameObject notePrefab;
     public Transform spawnPoint;
+    public KeyCode trackKey;
     void Start()
     {
 
@@ -14,7 +15,7 @@ public class D_shortNoteManager : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Alpha1))
+        if (Input.GetKeyDown(trackKey))
         {
             Debug.Log("1 pressed");
             SpawnNote();
@@ -23,7 +24,7 @@ public class D_shortNoteManager : MonoBehaviour
     }
     public void SpawnNote()
     {
-        Instantiate(notePrefab,new Vector3(-7.11f,5f,0f), Quaternion.identity);
+        Instantiate(notePrefab, spawnPoint.position, Quaternion.identity);
     }
 
     IEnumerator RealTimeWait(float second)

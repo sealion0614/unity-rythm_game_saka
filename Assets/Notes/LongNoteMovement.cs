@@ -5,7 +5,7 @@ using UnityEngine.Rendering;
 using System.Collections;
 using System.Collections.Generic;
 
-public class D_LongNoteMovement : MonoBehaviour
+public class LongNoteMovement : MonoBehaviour
 {
     public float speed = 5f;
     public bool isBeingHeld = false;
@@ -16,7 +16,7 @@ public class D_LongNoteMovement : MonoBehaviour
     public GameObject headObject;
     public GameObject tailObject;
 
-    public D_longNoteManager data;
+    public longNoteManager data;
 
     public float OriginalHeight = 1f;
     public float initialBodyLocalPos;

@@ -1,9 +1,9 @@
 using UnityEngine;
 using UnityEngine.Rendering;
 
-public class D_ButtonController : MonoBehaviour
+public class TrackController : MonoBehaviour
 {
-    public KeyCode D;
+    public KeyCode keyToPress;
     bool canBePressed = false;
     bool isPressing = false;
     bool headTouched = false;
@@ -19,7 +19,7 @@ public class D_ButtonController : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKeyDown(D))
+        if (Input.GetKeyDown(keyToPress))
         {
             
             if (headTouched)
@@ -29,7 +29,7 @@ public class D_ButtonController : MonoBehaviour
                 isPressing = true;
                 if (D_longHead != null)
                 {
-                    D_LongNoteMovement moveScript=D_longHead.GetComponentInParent<D_LongNoteMovement>();
+                    LongNoteMovement moveScript=D_longHead.GetComponentInParent<LongNoteMovement>();
                     if (moveScript != null)
                     {
                         moveScript.isBeingHeld = true;
@@ -44,7 +44,7 @@ public class D_ButtonController : MonoBehaviour
 
             }
         }
-        if (Input.GetKeyUp(D))
+        if (Input.GetKeyUp(keyToPress))
         {
             if (isPressing)
             {
