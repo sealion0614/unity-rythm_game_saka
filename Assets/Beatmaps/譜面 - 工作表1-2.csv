@@ -59,10 +59,10 @@ timing,d,f,j,k
 00''27''847,,short,,
 00''28''085,,,short,
 00''28''519,,,,short
-00''28''997,long,,,
+00''28''997,long_0.867,,,
 00''29''646,,short,,
 00''29''864,long end,,short,
-00''30''372,,long,,long
+00''30''372,,long_0.27,,long_0.27
 00''30''642,,long end,,long end
 00''30''781,,,,short
 00''30''871,,short,,
@@ -77,9 +77,9 @@ timing,d,f,j,k
 00''32''572,short,,,
 00''32''779,,short,,
 00''32''036,,,short,
-00''33''481,,long,,
-00''33''715,,,long,
-00''33''939,,,,long
+00''33''481,,long_0.624,,
+00''33''715,,,long_0.39,
+00''33''939,,,,long_0.166
 00''34''105,,long end,long end,long end
 00''34''383,,short,,
 00''34''504,,,short,
@@ -94,9 +94,9 @@ timing,d,f,j,k
 00''36''135,,,,short
 00''36''335,,,short,
 00''36''603,,short,,
-00''37''108,,,long,
-00''37''273,,long,,
-00''37''582,long,,,
+00''37''108,,,long_0.69,
+00''37''273,,long_0.525,,
+00''37''582,long_0.216,,,
 00''37''798,long end,long end,long end,
 00''37''977,,,,short
 00''38''091,,,short,
@@ -111,9 +111,9 @@ timing,d,f,j,k
 00''39''796,,short,,
 00''39''968,,,short,
 00''40''236,,,,short
-00''40''698,,,long,
-00''40''899,,long,,
-00''41''213,long,,,
+00''40''698,,,long_0.638,
+00''40''899,,long_0.437,,
+00''41''213,long_0.123,,,
 00''41''336,long end,long end,long end,
 00''41''602,,,,short
 00''41''796,,,,short
@@ -121,9 +121,9 @@ timing,d,f,j,k
 00''42''295,short,,,
 00''42''522,,,short,
 00''42''647,,short,,
-00''42''961,,,,long
-00''43''132,long,,,
-00''43''400,,long,,
+00''42''961,,,,long_1.34
+00''43''132,long_1.169,,,
+00''43''400,,long_0.901,,
 00''44''083,,,short,
 00''44''301,long end,long end,short,long end
 00''45''209,short,,,
@@ -175,24 +175,24 @@ timing,d,f,j,k
 00''56''946,,short,,
 00''57''387,short,,,short
 00''57''617,,,short,
-00''57''707,long,,,long
+00''57''707,long_1.069,,,long_1.069
 00''58''776,long end,,,long end
-00''59''181,,long,long,
-00''59''600,long,long end,long end,long
-01''00''776,long end,long,,long end
-01''01''232,,,long,
-01''01''643,,,,long
-01''02''146,long,long end,,
-01''02''581,long end,long,long end,long end
-01''03''288,,,long,long
-01''03''692,long,,,
+00''59''181,,long_0.419,long_0.419,
+00''59''600,long_1.176,long end,long end,long_1.176
+01''00''776,long end,long_1.37,,long end
+01''01''232,,,long_1.349,
+01''01''643,,,,long_0.938
+01''02''146,long_0.435,long end,,
+01''02''581,long end,long_1.567,long end,long end
+01''03''288,,,long_0.86,long_0.86
+01''03''692,long_0.456,,,
 01''04''148,long end,long end,long end,long end
-01''04''401,long,,,long
-01''04''856,,long,,
-01''05''744,long end,,long,long end
-01''06''685,,long end,long end,long
-01''07''602,long,,,
-01''08''451,,,long,
+01''04''401,long_1.343,,,long_1.343
+01''04''856,,long_1.829,,
+01''05''744,long end,,long_0.941,long end
+01''06''685,,long end,long end,long_2.24
+01''07''602,long_1.323,,,
+01''08''451,,,long_0.474,
 01''08''925,long end,short,long end,long end
 01''09''106,short,,short,
 01''09''363,,short,,short
@@ -204,14 +204,14 @@ timing,d,f,j,k
 01''10''749,,,,short
 01''10''942,,short,,
 01''11''168,short,,,
-01''11''368,,,,long
-01''11''828,,,long,
-01''12''070,long,,,
-01''12''283,,long,,
+01''11''368,,,,long_1.119
+01''11''828,,,long_0.659,
+01''12''070,long_0.417,,,
+01''12''283,,long_0.204,,
 01''12''487,long end,long end,long end,long end
-01''12''731,,long,,
-01''13''175,,,long,
-01''13''644,long,,,long
+01''12''731,,long_1.239,,
+01''13''175,,,long_0.795,
+01''13''644,long_0.326,,,long_0.326
 01''13''970,long end,long end,long end,long end
 01''14''089,,short,,
 01''15''003,,short,,short
@@ -241,5 +241,5 @@ timing,d,f,j,k
 01''27''602,,short,,short
 01''27''851,short,,short,
 01''28''070,,short,,short
-01''28''505,long,long,long,long
+01''28''505,long_1.478,long_1.478,long_1.478,long_1.478
 01''29''983,long end,long end,long end,long end

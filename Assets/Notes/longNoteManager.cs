@@ -3,6 +3,10 @@ using UnityEngine;
 
 public class longNoteManager : MonoBehaviour
 {
+    [Header("變形設定")]
+    public RectTransform bodyRect;
+    public RectTransform tailRect;
+    public float speed = 500f;
     public GameObject notePrefab;
     public Transform spawnPoint;
     public Transform bodyChange;
@@ -16,6 +20,18 @@ public class longNoteManager : MonoBehaviour
 
     }
 
+    public void SetDuration(float duration)
+    {
+        float newHeight = duration * speed;
+        if (bodyRect != null)
+        {
+            bodyRect.sizeDelta = new Vector2(bodyRect.sizeDelta.x, newHeight);
+        }
+        if (tailRect != null)
+        {
+            tailRect.anchoredPosition = new Vector2(tailRect.anchoredPosition.x, newHeight);
+        }
+    }
 
     void Update()
     {

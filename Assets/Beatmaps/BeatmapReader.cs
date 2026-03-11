@@ -15,11 +15,17 @@ public class BeatmapReader : MonoBehaviour
     public GameObject longNotePrefab;
     public Transform noteContainer;
 
+    [Header("時間設定")]
+    public float fallTime = 2f;
+    private float gameTimer = 0f;
+    private bool isPlaying = false;
+
     private class NoteData
     {
         public float time;
         public int track;
         public string type;
+        public float duration;
     }
 
     private List<NoteData> notes = new List<NoteData>();
@@ -28,7 +34,12 @@ public class BeatmapReader : MonoBehaviour
     void Start()
     {
         ReadCSV();
-        if (music != null) music.Play(); 
+        Debug.Log(notes.Count + " 個音符！");
+        if (music != null)
+        {
+            music.PlayDelayed(fallTime); 
+            isPlaying = true;
+        }
     }
 
     void ReadCSV()
@@ -42,7 +53,8 @@ public class BeatmapReader : MonoBehaviour
             string[] cols = line.Split(',');
             if (cols.Length >= 1)
             {
-                float timeInSeconds = ParseTime(cols[0]);
+                if (string.IsNullOrEmpty(cols[0].Trim())) continue;
+                float timeInSeconds = ParseTime(cols[0].Trim());
                 for (int track = 0; track < 4; track++)
                 {
                     if (track + 1 < cols.Length)
@@ -53,6 +65,26 @@ public class BeatmapReader : MonoBehaviour
                             NoteData newNote = new NoteData();
                             newNote.time = timeInSeconds;
                             newNote.track = track;
+                            if (cell == "short")
+                            {
+                                newNote.type = "short";
+                                newNote.duration = 0f;
+                            }
+                            else if (cell.StartsWith("long"))
+                            {
+                                newNote.type = "long";
+                                string[] parts = cell.Split('_');
+                                if (parts.Length > 1) 
+                                {
+                                    newNote.duration = float.Parse(parts[1]);
+                                    Debug.Log("成功讀取到長魚，長度是：" + newNote.duration);
+                                } 
+                                else 
+                                {
+                                    newNote.duration = 1f;
+                                }
+                                Debug.Log($"長音符！時間:{newNote.time}秒, 軌道:{newNote.track}, 長度:{newNote.duration}");
+                            }
                             newNote.type = cell;
                             notes.Add(newNote);
                         }
@@ -65,8 +97,7 @@ public class BeatmapReader : MonoBehaviour
 
     float ParseTime(string t)
     {
-        t = t.Replace("\"", ":").Replace("'", ":");
-        string[] parts = t.Split(':');
+        string[] parts = t.Split(new char[] { '"', '\'', ':' }, System.StringSplitOptions.RemoveEmptyEntries);
         if (parts.Length >= 3)
         {
             float m = float.Parse(parts[0]);
@@ -79,8 +110,10 @@ public class BeatmapReader : MonoBehaviour
     
     void Update()
     {
+        if (!isPlaying || currentIndex >= notes.Count) return;
         if (music == null) return;
-        while (currentIndex < notes.Count && music.time >= notes[currentIndex].time)
+        gameTimer += Time.deltaTime;
+        while (currentIndex < notes.Count && gameTimer >= notes[currentIndex].time)
         {
             SpawnNote(notes[currentIndex]);
             currentIndex++;
@@ -95,9 +128,17 @@ public class BeatmapReader : MonoBehaviour
         prefabToSpawn = longNotePrefab;
         }
         if (prefabToSpawn == null) return;
-        GameObject newNote = Instantiate(prefabToSpawn, trackSpawns[data.track].position, Quaternion.identity);
+        Transform spawnPoint = trackSpawns[data.track];
+        GameObject newNote = Instantiate(prefabToSpawn, spawnPoint.position, Quaternion.identity);
+        if (data.type == "long")
+            {
+                longNoteManager longScript = newNote.GetComponent<longNoteManager>();
+                if (longScript != null)
+                {
+                    longScript.SetDuration(data.duration);
+                }
+            }
         newNote.transform.SetParent(noteContainer, false);
-        newNote.transform.position = trackSpawns[data.track].position;
         newNote.transform.localScale = Vector3.one;
     }
 }
