@@ -23,6 +23,13 @@ public class longNoteManager : MonoBehaviour
     public void SetDuration(float duration)
     {
         float newHeight = duration * speed;
+        float tailHeight = 0f;
+        if (tailRect != null)
+        {
+            tailHeight = tailRect.rect.height;
+        }
+        float bodyHeight = newHeight - tailHeight;
+        if (bodyHeight < 0f) bodyHeight = 0f;
         if (bodyRect != null)
         {
             bodyRect.sizeDelta = new Vector2(bodyRect.sizeDelta.x, newHeight);

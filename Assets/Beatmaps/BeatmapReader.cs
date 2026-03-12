@@ -60,7 +60,7 @@ public class BeatmapReader : MonoBehaviour
                     if (track + 1 < cols.Length)
                     {
                         string cell = cols[track + 1].Trim().ToLower();
-                        if (cell == "short" || cell == "long")
+                        if (cell == "short" || cell.StartsWith("long_"))
                         {
                             NoteData newNote = new NoteData();
                             newNote.time = timeInSeconds;
@@ -70,7 +70,7 @@ public class BeatmapReader : MonoBehaviour
                                 newNote.type = "short";
                                 newNote.duration = 0f;
                             }
-                            else if (cell.StartsWith("long"))
+                            else if (cell.StartsWith("long_"))
                             {
                                 newNote.type = "long";
                                 string[] parts = cell.Split('_');
@@ -85,7 +85,6 @@ public class BeatmapReader : MonoBehaviour
                                 }
                                 Debug.Log($"長音符！時間:{newNote.time}秒, 軌道:{newNote.track}, 長度:{newNote.duration}");
                             }
-                            newNote.type = cell;
                             notes.Add(newNote);
                         }
                     }
