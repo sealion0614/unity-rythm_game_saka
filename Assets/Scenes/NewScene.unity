@@ -1081,6 +1081,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   keyToPress: 100
+  Short: {fileID: 0}
+  currentNote: {fileID: 0}
 --- !u!1 &1730859608
 GameObject:
   m_ObjectHideFlags: 0
@@ -1256,7 +1258,7 @@ AudioSource:
   m_audioClip: {fileID: 0}
   m_Resource: {fileID: 8300000, guid: 56911add45d004e46af996a5d0c775a7, type: 3}
   m_PlayOnAwake: 0
-  m_Volume: 1
+  m_Volume: 0.259
   m_Pitch: 1
   Loop: 0
   Mute: 0

@@ -19,7 +19,7 @@ public class NoteMovement : MonoBehaviour
         transform.Translate(Vector3.down * speed * Time.deltaTime);
 
 
-     if (transform.position.y < -400) { Destroy(gameObject); }
+     if (transform.position.y < 0f) { Destroy(gameObject); }
     }
 }
         //if (tailObject != null)
