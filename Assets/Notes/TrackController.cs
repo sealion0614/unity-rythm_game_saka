@@ -4,7 +4,7 @@ using UnityEngine.Rendering;
 public class TrackController : MonoBehaviour
 {
     public KeyCode keyToPress;
-    bool canBePressed = false;
+    bool canBePressed = true;
     bool isPressing = false;
     bool headTouched = false;
     bool tailTouched = false;
@@ -21,33 +21,33 @@ public class TrackController : MonoBehaviour
     {
         if (Input.GetKeyDown(keyToPress))
         {
-            
-            if (headTouched && longHead != null)
-            {
-                float distance = Mathf.Abs(longHead.transform.position.y - transform.position.y);
+            Debug.Log("press D");
+            // if (headTouched && longHead != null)
+            // {
+                /*float distance = Mathf.Abs(longHead.transform.position.y - transform.position.y);
                 Debug.Log("longHead+1");
                 if (distance <= 0.5f) Debug.Log("longHead: Perfect!!");
                 else if (distance <= 1.2f) Debug.Log("longHead: Great!");
-                else Debug.Log("longHead: Good");
-                headTouched = false;
-                isPressing = true;
-                if (longHead != null)
-                {
-                    LongNoteMovement moveScript=longHead.GetComponentInParent<LongNoteMovement>();
-                    if (moveScript != null)
-                    {
-                        moveScript.isBeingHeld = true;
-                    }
-                }
-            }
-            else if (canBePressed && Short != null)
+                else Debug.Log("longHead: Good");*/
+            //     headTouched = false;
+            //     isPressing = true;
+            //     if (longHead != null)
+            //     {
+            //         LongNoteMovement moveScript=longHead.GetComponentInParent<LongNoteMovement>();
+            //         if (moveScript != null)
+            //         {
+            //             moveScript.isBeingHeld = true;
+            //         }
+            //     }
+            // }
+            if (canBePressed && Short != null)
             {
-                float distance = Mathf.Abs(Short.transform.position.y - transform.position.y);
+                /*float distance = Mathf.Abs(Short.transform.position.y - transform.position.y);
                 if (distance <= 0.5f) Debug.Log("short: Perfect!!");
                 else if (distance <= 1.2f) Debug.Log("short: Great!");
-                else Debug.Log("short: Good");
+                else Debug.Log("short: Good");*/
                 Destroy(Short);
-                canBePressed = false;
+                // canBePressed = false;
                 Debug.Log("short+1");
 
             }
@@ -58,10 +58,10 @@ public class TrackController : MonoBehaviour
             {
                 if (tailTouched && longTail != null)
                 {
-                    float distance = Mathf.Abs(longHead.transform.position.y - transform.position.y);
+                    /*float distance = Mathf.Abs(longHead.transform.position.y - transform.position.y);
                     if (distance <= 0.5f) Debug.Log("longTail: Perfect!!");
                     else if (distance <= 1.2f) Debug.Log("longTail: Great!");
-                    else Debug.Log("longTail: Good");
+                    else Debug.Log("longTail: Good");*/
                     Destroy(longTail.transform.parent.gameObject);
                     Debug.Log("tailHead+1");
                 }

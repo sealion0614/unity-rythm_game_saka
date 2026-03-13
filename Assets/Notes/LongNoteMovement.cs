@@ -64,7 +64,7 @@ public class LongNoteMovement : MonoBehaviour
             {
                 isBeingHeld = false;
             }
-            if (isBeingHeld)
+            if (isBeingHeld&&headChange.position.y==-400f)
             {
                 Vector3 headPos = headChange.position;
                 headPos.y = judgeLineY;
