@@ -9,6 +9,7 @@ using System.Collections.Generic;
 public class LongNoteMovement : MonoBehaviour
 {
     public float speed = 500f;
+    public float tailHitWindow = 80f;
     public bool isBeingHeld = false;
     public Transform bodyChange;
     public Transform tailChange;
@@ -31,6 +32,7 @@ public class LongNoteMovement : MonoBehaviour
     public GameObject Hit;
     private float startY;
     private float startTime;
+    private float originalLength;
 
     public void SetMyScale(float s)
     {
@@ -42,7 +44,6 @@ public class LongNoteMovement : MonoBehaviour
         startTime = Time.time;
         //Hit = GameObject.FindWithTag("hit");
         judgeLineY = -400f;
-        Debug.Log("judgeline" + judgeLineY);
         myScale = data.defaultHeight;
         sr = bodyChange.GetComponent<Image>();
         float myX = transform.localPosition.x;
@@ -64,7 +65,10 @@ public class LongNoteMovement : MonoBehaviour
         }
         //Debug.Log(gameObject.name + " 的起跑點是：" + startY + "，速度是：" + speed);
         //bodySpriteUnitHeight = sr.sprite.bounds.size.y;
-
+        if (bodyChange != null) 
+        {
+            originalLength = bodyChange.GetComponent<RectTransform>().sizeDelta.y;
+        }
     }
 
     void Update()
@@ -74,9 +78,15 @@ public class LongNoteMovement : MonoBehaviour
         Color colors = sr.color;
         colors.a = 1f;
         sr.color = colors;
+
         float timeAlive = Time.time - startTime;
         float currentY = startY - (timeAlive * speed);
         transform.localPosition = new Vector3(transform.localPosition.x, currentY, transform.localPosition.z);
+        float tailAbsoluteY = currentY;
+        if (tailChange != null) 
+        {
+            tailAbsoluteY = currentY + tailChange.localPosition.y;
+        }
         //if (!hasInitialized && headChange.transform.position.y <= judgeLineY)
         //{
         //    initialBodyLocalPos = tailChange.position.y - judgeLineY;
@@ -88,10 +98,28 @@ public class LongNoteMovement : MonoBehaviour
         //if (hasInitialized)
         //{
         //Debug.Log(isBeingHeld);
-        if(Key != KeyCode.None && !Input.GetKey(Key))
+        if(Key != KeyCode.None)
         {
-            //Debug.Log("held");
-            isBeingHeld = false;
+            if (Input.GetKeyUp(Key))
+            {
+                if (isBeingHeld && Mathf.Abs(tailAbsoluteY - judgeLineY) <= tailHitWindow)
+                {
+                    Destroy(gameObject);
+                    return;
+                }
+                else
+                {
+                    isBeingHeld = false;
+                }
+            }
+            else if (!Input.GetKey(Key))
+            {
+                isBeingHeld = false;
+            }
+            if (isBeingHeld && tailAbsoluteY < (judgeLineY - tailHitWindow))
+            {
+                isBeingHeld = false;
+            }
         }
         if (isBeingHeld && currentY <= judgeLineY)
         {
