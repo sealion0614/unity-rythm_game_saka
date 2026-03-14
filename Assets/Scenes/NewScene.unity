@@ -218,12 +218,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 281004060}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 75, y: 600, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 937500867}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &324640833
 GameObject:
@@ -237,6 +237,7 @@ GameObject:
   - component: {fileID: 324640835}
   - component: {fileID: 324640836}
   - component: {fileID: 324640837}
+  - component: {fileID: 324640838}
   m_Layer: 5
   m_Name: hitPiont_K
   m_TagString: Untagged
@@ -347,6 +348,21 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
+--- !u!114 &324640838
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 324640833}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7eec805caf24e7c49a9fbcdfb3a5e407, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  keyToPress: 107
+  Short: {fileID: 0}
+  currentNote: {fileID: 0}
 --- !u!1 &357614926
 GameObject:
   m_ObjectHideFlags: 0
@@ -446,12 +462,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 470957764}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -225, y: 600, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 937500867}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &641047308
 GameObject:
@@ -588,12 +604,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 733004859}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -75, y: 600, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 937500867}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &937500866
 GameObject:
@@ -631,6 +647,10 @@ RectTransform:
   - {fileID: 1344529798}
   - {fileID: 992663245}
   - {fileID: 2069785083}
+  - {fileID: 470957765}
+  - {fileID: 733004860}
+  - {fileID: 281004061}
+  - {fileID: 1730859609}
   - {fileID: 1705982353}
   - {fileID: 1832291432}
   - {fileID: 1733396091}
@@ -1210,12 +1230,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1730859608}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 225, y: 600, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 937500867}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1733396090
 GameObject:
@@ -1229,6 +1249,7 @@ GameObject:
   - component: {fileID: 1733396093}
   - component: {fileID: 1733396092}
   - component: {fileID: 1733396094}
+  - component: {fileID: 1733396095}
   m_Layer: 5
   m_Name: hitPiont_J
   m_TagString: Untagged
@@ -1339,6 +1360,21 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
+--- !u!114 &1733396095
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1733396090}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7eec805caf24e7c49a9fbcdfb3a5e407, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  keyToPress: 106
+  Short: {fileID: 0}
+  currentNote: {fileID: 0}
 --- !u!1 &1825437261
 GameObject:
   m_ObjectHideFlags: 0
@@ -1379,7 +1415,7 @@ MonoBehaviour:
   shortNotePrefab: {fileID: 1344581926032113458, guid: 60754d92b886e412b92a059bbc27e099, type: 3}
   longNotePrefab: {fileID: 7794779772655203161, guid: 7913a26f711814ef8b32edb0e17dc82f, type: 3}
   noteContainer: {fileID: 937500867}
-  fallTime: 2.5
+  fallTime: 2
 --- !u!4 &1825437263
 Transform:
   m_ObjectHideFlags: 0
@@ -1821,7 +1857,3 @@ SceneRoots:
   - {fileID: 2023878049}
   - {fileID: 641047313}
   - {fileID: 1825437263}
-  - {fileID: 470957765}
-  - {fileID: 733004860}
-  - {fileID: 281004061}
-  - {fileID: 1730859609}

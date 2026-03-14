@@ -29,6 +29,8 @@ public class LongNoteMovement : MonoBehaviour
     private float myScale = 1f;
     public KeyCode Key;
     public GameObject Hit;
+    private float startY;
+    private float startTime;
 
     public void SetMyScale(float s)
     {
@@ -36,27 +38,31 @@ public class LongNoteMovement : MonoBehaviour
     }
     void Start()
     {
-        Hit = GameObject.FindWithTag("hit");
-        judgeLineY=Hit.transform.position.y;
+        startY = transform.localPosition.y;
+        startTime = Time.time;
+        //Hit = GameObject.FindWithTag("hit");
+        judgeLineY = -400f;
         Debug.Log("judgeline" + judgeLineY);
         myScale = data.defaultHeight;
         sr = bodyChange.GetComponent<Image>();
-        if (headChange.position.x == -225)
+        float myX = transform.localPosition.x;
+        if (Mathf.Abs(myX - (-225f)) < 20f)
         {
             Key = KeyCode.D;
         }
-        else if(headChange.position.x ==-75)
+        else if(Mathf.Abs(myX - (-75f)) < 20f)
         {
             Key = KeyCode.F;
         }
-        else if (headChange.position.x == 75)
+        else if (Mathf.Abs(myX - 75f) < 20f)
         {
             Key = KeyCode.J;
         }
         else
         {
-            Key = KeyCode.J;
+            Key = KeyCode.K;
         }
+        //Debug.Log(gameObject.name + " 的起跑點是：" + startY + "，速度是：" + speed);
         //bodySpriteUnitHeight = sr.sprite.bounds.size.y;
 
     }
@@ -68,7 +74,9 @@ public class LongNoteMovement : MonoBehaviour
         Color colors = sr.color;
         colors.a = 1f;
         sr.color = colors;
-        transform.Translate(Vector3.down * speed * Time.deltaTime);
+        float timeAlive = Time.time - startTime;
+        float currentY = startY - (timeAlive * speed);
+        transform.localPosition = new Vector3(transform.localPosition.x, currentY, transform.localPosition.z);
         //if (!hasInitialized && headChange.transform.position.y <= judgeLineY)
         //{
         //    initialBodyLocalPos = tailChange.position.y - judgeLineY;
@@ -79,37 +87,57 @@ public class LongNoteMovement : MonoBehaviour
 
         //if (hasInitialized)
         //{
-        Debug.Log(isBeingHeld);
-        if (isBeingHeld)
+        //Debug.Log(isBeingHeld);
+        if(Key != KeyCode.None && !Input.GetKey(Key))
+        {
+            //Debug.Log("held");
+            isBeingHeld = false;
+        }
+        if (isBeingHeld && currentY <= judgeLineY)
+        {
+            float depth = judgeLineY - currentY;
+            if (headChange != null)
             {
-            Debug.Log("頭部實際 Y 座標: " + headChange.position.y);
-            if (isBeingHeld && headChange.position.y <= judgeLineY)
-            {
-                Debug.Log("stuck");
-                Vector3 headPos = headChange.position;
-                headPos.y = judgeLineY;
-                headChange.position = headPos;
-                //LongNoteShrink();
-
+                headChange.localPosition = new Vector3(headChange.localPosition.x, depth, headChange.localPosition.z);
             }
-            else if (headChange.position.y <= judgeLineY)
+            if (bodyChange != null && tailChange != null)
             {
-                Debug.Log("change color");
+                bodyChange.localPosition = new Vector3(bodyChange.localPosition.x, depth, bodyChange.localPosition.z);
+                float originalHeight = tailChange.localPosition.y;
+                float currentBodyHeight = originalHeight - depth;
+                if (currentBodyHeight < 0) currentBodyHeight = 0;
+
+                RectTransform bodyRect = bodyChange.GetComponent<RectTransform>();
+                bodyRect.sizeDelta = new Vector2(bodyRect.sizeDelta.x, currentBodyHeight);
+            }
+            else
+            {
+                if (headChange != null) headChange.localPosition = new Vector3(headChange.localPosition.x, 0, headChange.localPosition.z);
+                if (bodyChange != null) bodyChange.localPosition = new Vector3(bodyChange.localPosition.x, 0, bodyChange.localPosition.z);
+                if (bodyChange != null && tailChange != null) 
+                {
+                    RectTransform bodyRect = bodyChange.GetComponent<RectTransform>();
+                    bodyRect.sizeDelta = new Vector2(bodyRect.sizeDelta.x, tailChange.localPosition.y);
+                }
+            }
+            if (headChange.localPosition.y <= judgeLineY)
+            {
+                //Debug.Log("change color");
                 colors.a = 0.7f;
                 sr.color = colors;
             }
-            if(!(Input.GetKey(Key))){
-                Debug.Log("held");
-                isBeingHeld = false;
-            }
+            
         }
-            if (tailChange.position.y <= judgeLineY)
+            if (tailChange != null && (currentY + tailChange.localPosition.y) <= judgeLineY)
             {
-                Debug.Log("long finished");
-                Destroy(gameObject); return;
+                //Debug.Log("long finished");
+                Destroy(gameObject);
             }
 
-            //if (transform.position.y < ) { Destroy(gameObject); }
+            else if (transform.position.y < -1000f) 
+            { 
+                Destroy(gameObject); 
+            }
         }
     //}
 }

@@ -77,13 +77,13 @@ public class BeatmapReader : MonoBehaviour
                                 if (parts.Length > 1) 
                                 {
                                     newNote.duration = float.Parse(parts[1]);
-                                    Debug.Log("成功讀取到長魚，長度是：" + newNote.duration);
+                                    //Debug.Log("成功讀取到長魚，長度是：" + newNote.duration);
                                 } 
                                 else 
                                 {
                                     newNote.duration = 1f;
                                 }
-                                Debug.Log($"長音符！時間:{newNote.time}秒, 軌道:{newNote.track}, 長度:{newNote.duration}");
+                                //Debug.Log($"長音符！時間:{newNote.time}秒, 軌道:{newNote.track}, 長度:{newNote.duration}");
                             }
                             notes.Add(newNote);
                         }
@@ -111,7 +111,14 @@ public class BeatmapReader : MonoBehaviour
     {
         if (!isPlaying || currentIndex >= notes.Count) return;
         if (music == null) return;
-        gameTimer += Time.deltaTime;
+        if (gameTimer < fallTime)
+        {
+            gameTimer += Time.deltaTime;
+        }
+        else
+        {
+            gameTimer = music.time + fallTime;
+        }
         while (currentIndex < notes.Count && gameTimer >= notes[currentIndex].time)
         {
             SpawnNote(notes[currentIndex]);
@@ -124,19 +131,22 @@ public class BeatmapReader : MonoBehaviour
         GameObject prefabToSpawn = shortNotePrefab;
         if (data.type == "long" && longNotePrefab != null)
         {
-        prefabToSpawn = longNotePrefab;
+            prefabToSpawn = longNotePrefab;
         }
         if (prefabToSpawn == null) return;
         Transform spawnPoint = trackSpawns[data.track];
-        GameObject newNote = Instantiate(prefabToSpawn, spawnPoint.position, Quaternion.identity);
+        GameObject newNote = Instantiate(prefabToSpawn, noteContainer);
+        newNote.transform.localPosition = spawnPoint.position;
+        newNote.transform.localScale = Vector3.one;
         if (data.type == "long")
+        {
+            longNoteManager longScript = newNote.GetComponent<longNoteManager>();
+            if (longScript != null)
             {
-                longNoteManager longScript = newNote.GetComponent<longNoteManager>();
-                if (longScript != null)
-                {
-                    longScript.SetDuration(data.duration);
-                }
+                longScript.SetDuration(data.duration);
             }
+        }
+        newNote.transform.position = spawnPoint.position;
         newNote.transform.SetParent(noteContainer, false);
         newNote.transform.localScale = Vector3.one;
     }

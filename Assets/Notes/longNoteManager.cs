@@ -32,11 +32,11 @@ public class longNoteManager : MonoBehaviour
         if (bodyHeight < 0f) bodyHeight = 0f;
         if (bodyRect != null)
         {
-            bodyRect.sizeDelta = new Vector2(bodyRect.sizeDelta.x, newHeight);
+            bodyRect.sizeDelta = new Vector2(bodyRect.sizeDelta.x, bodyHeight);
         }
         if (tailRect != null)
         {
-            tailRect.anchoredPosition = new Vector2(tailRect.anchoredPosition.x, newHeight);
+            tailRect.anchoredPosition = new Vector2(tailRect.anchoredPosition.x, bodyHeight);
         }
     }
 
@@ -44,7 +44,7 @@ public class longNoteManager : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Alpha2))
         {
-            Debug.Log("2 pressed");
+            //Debug.Log("2 pressed");
             SpawnNote(1f);
             StartCoroutine(RealTimeWait(2f,5f));
 
@@ -62,7 +62,7 @@ public class longNoteManager : MonoBehaviour
         InitScale = movement.bodyChange.localScale.y;
         SpriteRenderer sr = movement.bodyChange.GetComponent<SpriteRenderer>();
         bodySpriteUnitHeight = sr.sprite.rect.height / sr.sprite.pixelsPerUnit;
-       
+        
         Vector3 newScale = movement.bodyChange.localScale;
         newScale.y = shrink * InitScale;
         movement.bodyChange.localScale= newScale;
@@ -73,7 +73,7 @@ public class longNoteManager : MonoBehaviour
             movement.bodyChange.localPosition.y+bodySpriteUnitHeight* InitScale * shrink ,
             movement.tailChange.localPosition.z
             );
-        Debug.Log($"生成音符: 原始Scale={bodySpriteUnitHeight}, 最終Scale={newScale.y}, Tail位置={movement.bodyChange.localPosition.y + bodySpriteUnitHeight * movement.bodyChange.localScale.y}");
+        //Debug.Log($"生成音符: 原始Scale={bodySpriteUnitHeight}, 最終Scale={newScale.y}, Tail位置={movement.bodyChange.localPosition.y + bodySpriteUnitHeight * movement.bodyChange.localScale.y}");
 
     }
 
