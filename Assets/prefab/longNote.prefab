@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 2525903522323663355}
   m_Layer: 5
   m_Name: body
-  m_TagString: Untagged
+  m_TagString: D_Body
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -328,6 +328,7 @@ MonoBehaviour:
   tailChange: {fileID: 3599884515780956356}
   headChange: {fileID: 5151902568829299225}
   sr: {fileID: 6694194471765820734}
+  missing: 0
   headObject: {fileID: 0}
   tailObject: {fileID: 0}
   data: {fileID: 6954585416922203149}

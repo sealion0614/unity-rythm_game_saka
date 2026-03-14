@@ -1,3 +1,4 @@
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.Rendering;
 
@@ -10,7 +11,9 @@ public class TrackController : MonoBehaviour
     bool tailTouched = false;
     public GameObject Short;
     public GameObject currentNote;
+
     GameObject longHead;
+    GameObject longBody;
     GameObject longTail;
     void Start()
     {
@@ -20,20 +23,32 @@ public class TrackController : MonoBehaviour
 
     void Update()
     {
+        LongNoteMovement moveScript = null;
+        LongNoteMovement colorScript = null;
+        if (longHead != null)
+        {
+            moveScript = longHead.GetComponentInParent<LongNoteMovement>();
+        }
+        if (longBody != null)
+        {
+            colorScript = longBody.GetComponentInParent<LongNoteMovement>();
+        }
+        
         if (Input.GetKeyDown(keyToPress))
         { 
             if (headTouched && longHead != null)
             {
-            //float distance = Mathf.Abs(longHead.transform.position.y - transform.position.y);
-            //Debug.Log("longHead+1");
-            //if (distance <= 0.5f) Debug.Log("longHead: Perfect!!");
-            //else if (distance <= 1.2f) Debug.Log("longHead: Great!");
-            //else Debug.Log("longHead: Good");
+                
+                //float distance = Mathf.Abs(longHead.transform.position.y - transform.position.y);
+                //Debug.Log("longHead+1");
+                //if (distance <= 0.5f) Debug.Log("longHead: Perfect!!");
+                //else if (distance <= 1.2f) Debug.Log("longHead: Great!");
+                //else Debug.Log("longHead: Good");
                 headTouched = false;
                 isPressing = true;
                 if (longHead != null)
                 {
-                    LongNoteMovement moveScript=longHead.GetComponentInParent<LongNoteMovement>();
+                    
                     if (moveScript != null)
                     {
                         moveScript.isBeingHeld = true;
@@ -42,10 +57,11 @@ public class TrackController : MonoBehaviour
                     else
                     {
                         
-                        //Debug.LogError("找不到 LongNoteMovement 腳本！碰撞到的物件名稱是: " + longHead.name);
+                        
                     }
                 }
             }
+            
             if (canBePressed && Short != null)
             {
                 /*float distance = Mathf.Abs(Short.transform.position.y - transform.position.y);
@@ -60,24 +76,39 @@ public class TrackController : MonoBehaviour
 
             }
         }
+        else if (headTouched && !Input.GetKeyDown(keyToPress) && longHead != null)
+        {
+            Debug.Log("miss");
+            if (colorScript != null)
+            {
+                colorScript.missing = true;
+            }
+        }
         if (Input.GetKeyUp(keyToPress))
         {
             if (isPressing)
             {
-                if (tailTouched)
+                if (tailTouched && longTail != null)
                 {
                     /*float distance = Mathf.Abs(longHead.transform.position.y - transform.position.y);
                     if (distance <= 0.5f) Debug.Log("longTail: Perfect!!");
                     else if (distance <= 1.2f) Debug.Log("longTail: Great!");
                     else Debug.Log("longTail: Good");*/
-                    Destroy(longTail.transform.parent.gameObject);
+                    GameObject parent = longTail.transform.parent.gameObject;
+                    Destroy(parent);
+                    longTail = null;
                     //Debug.Log("tailHead+1");
                 }
                 else
                 {
                     Debug.Log("miss");
+                    if (colorScript != null)
+                    {
+                        colorScript.missing = true;
+                    }
+
                 }
-                isPressing= false;
+                isPressing = false;
                 if (longTail != null)
                 {
                     Destroy(longTail.transform.parent.gameObject);
@@ -85,6 +116,8 @@ public class TrackController : MonoBehaviour
                 }
 
             }
+            
+            
 
         }
     }
@@ -109,6 +142,12 @@ public class TrackController : MonoBehaviour
             longTail = other.gameObject;
             Debug.Log("longTail touched");
         }
+        else if (other.CompareTag("D_Body"))
+        {
+            tailTouched = true;
+            longBody = other.gameObject;
+            Debug.Log("longBody touched");
+        }
     }
 
     private void OnTriggerExit2D(Collider2D other)
@@ -122,11 +161,13 @@ public class TrackController : MonoBehaviour
         {
             headTouched = false;
             Debug.Log("Head out");
+            longHead = null;
         }
         if (other.CompareTag("D_Tail"))
         {
             tailTouched = false;
             Debug.Log("Tail out");
+            longHead = null;
         }
 
     }

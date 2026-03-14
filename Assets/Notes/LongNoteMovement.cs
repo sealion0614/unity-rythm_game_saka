@@ -15,6 +15,7 @@ public class LongNoteMovement : MonoBehaviour
     public Transform tailChange;
     public Transform headChange;
     public UnityEngine.UI.Image sr;
+    public bool missing;
 
     public GameObject headObject;
     public GameObject tailObject;
@@ -40,12 +41,18 @@ public class LongNoteMovement : MonoBehaviour
     }
     void Start()
     {
+        
+        
+        missing = false;
         startY = transform.localPosition.y;
         startTime = Time.time;
         //Hit = GameObject.FindWithTag("hit");
         judgeLineY = -400f;
         myScale = data.defaultHeight;
         sr = bodyChange.GetComponent<Image>();
+        Color colors = sr.color;
+        colors.a = 1f;
+        sr.color = colors;
         float myX = transform.localPosition.x;
         if (Mathf.Abs(myX - (-225f)) < 20f)
         {
@@ -75,9 +82,16 @@ public class LongNoteMovement : MonoBehaviour
     {
         
 
-        Color colors = sr.color;
-        colors.a = 1f;
-        sr.color = colors;
+        
+        if (missing)
+        {
+            Debug.Log("change color");
+            Color colors = sr.color;
+            colors.a = 0.7f;
+            sr.color = colors;
+            isBeingHeld = false;
+        }
+        
 
         float timeAlive = Time.time - startTime;
         float currentY = startY - (timeAlive * speed);
@@ -148,20 +162,14 @@ public class LongNoteMovement : MonoBehaviour
                     bodyRect.sizeDelta = new Vector2(bodyRect.sizeDelta.x, tailChange.localPosition.y);
                 }
             }
-            if (headChange.localPosition.y <= judgeLineY)
-            {
-                //Debug.Log("change color");
-                colors.a = 0.7f;
-                sr.color = colors;
-            }
+            
             
         }
-            if (tailChange != null && (currentY + tailChange.localPosition.y) <= judgeLineY)
+            if (tailChange != null && (currentY + tailChange.localPosition.y) <= judgeLineY&&isBeingHeld&&!missing)
             {
                 //Debug.Log("long finished");
                 Destroy(gameObject);
             }
-
             else if (transform.position.y < -1000f) 
             { 
                 Destroy(gameObject); 
