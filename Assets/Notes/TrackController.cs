@@ -40,7 +40,7 @@ public class TrackController : MonoBehaviour
             //         }
             //     }
             // }
-            if (canBePressed && Short != null)
+            if (canBePressed)
             {
                 /*float distance = Mathf.Abs(Short.transform.position.y - transform.position.y);
                 if (distance <= 0.5f) Debug.Log("short: Perfect!!");
@@ -56,7 +56,7 @@ public class TrackController : MonoBehaviour
         {
             if (isPressing)
             {
-                if (tailTouched && longTail != null)
+                if (tailTouched)
                 {
                     /*float distance = Mathf.Abs(longHead.transform.position.y - transform.position.y);
                     if (distance <= 0.5f) Debug.Log("longTail: Perfect!!");
