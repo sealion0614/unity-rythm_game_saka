@@ -13,7 +13,7 @@ public class LongNoteMovement : MonoBehaviour
     public Transform bodyChange;
     public Transform tailChange;
     public Transform headChange;
-    public Image sr;
+    public UnityEngine.UI.Image sr;
 
     public GameObject headObject;
     public GameObject tailObject;
@@ -23,10 +23,12 @@ public class LongNoteMovement : MonoBehaviour
     public float OriginalHeight = 1f;
     public float initialBodyLocalPos;
     public float initialLocalScaleY;
-    public float judgeLineY = -2.55f;
+    private float judgeLineY = -400;
     private bool hasInitialized = false;
     public float bodySpriteUnitHeight;
     private float myScale = 1f;
+    public KeyCode Key;
+    public GameObject Hit;
 
     public void SetMyScale(float s)
     {
@@ -34,54 +36,73 @@ public class LongNoteMovement : MonoBehaviour
     }
     void Start()
     {
+        Hit = GameObject.FindWithTag("hit");
+        judgeLineY=Hit.transform.position.y;
+        Debug.Log("judgeline" + judgeLineY);
         myScale = data.defaultHeight;
         sr = bodyChange.GetComponent<Image>();
+        if (headChange.position.x == -225)
+        {
+            Key = KeyCode.D;
+        }
+        else if(headChange.position.x ==-75)
+        {
+            Key = KeyCode.F;
+        }
+        else if (headChange.position.x == 75)
+        {
+            Key = KeyCode.J;
+        }
+        else
+        {
+            Key = KeyCode.J;
+        }
         //bodySpriteUnitHeight = sr.sprite.bounds.size.y;
 
     }
 
     void Update()
     {
-            transform.Translate(Vector3.down * speed * Time.deltaTime);
-        if (!hasInitialized && headChange.transform.position.y <= judgeLineY)
-        {
-            initialBodyLocalPos = tailChange.position.y - judgeLineY;
-            initialLocalScaleY = bodyChange.localScale.y;
-            hasInitialized = true;
-            //bodyChange.position = headChange.position;
-        }
+        
 
-        if (hasInitialized)
-        {
+        Color colors = sr.color;
+        colors.a = 1f;
+        sr.color = colors;
+        transform.Translate(Vector3.down * speed * Time.deltaTime);
+        //if (!hasInitialized && headChange.transform.position.y <= judgeLineY)
+        //{
+        //    initialBodyLocalPos = tailChange.position.y - judgeLineY;
+        //    initialLocalScaleY = bodyChange.localScale.y;
+        //    hasInitialized = true;
+        //    //bodyChange.position = headChange.position;
+        //}
 
-            if (bodyChange != null && bodyChange.localScale.y <= 0.01f)
+        //if (hasInitialized)
+        //{
+        Debug.Log(isBeingHeld);
+        if (isBeingHeld)
             {
-                Debug.Log("long finished!");
-                Destroy(gameObject);
-                return;
-            }
-            if (isBeingHeld && !(Input.GetKey(KeyCode.D)))
+            Debug.Log("頭部實際 Y 座標: " + headChange.position.y);
+            if (isBeingHeld && headChange.position.y <= judgeLineY)
             {
-                isBeingHeld = false;
-            }
-            if (isBeingHeld&&headChange.position.y==-400f)
-            {
+                Debug.Log("stuck");
                 Vector3 headPos = headChange.position;
                 headPos.y = judgeLineY;
                 headChange.position = headPos;
                 //LongNoteShrink();
 
             }
-            else
+            else if (headChange.position.y <= judgeLineY)
             {
-                isBeingHeld = false;
-                Color colors = sr.color;
+                Debug.Log("change color");
                 colors.a = 0.7f;
                 sr.color = colors;
             }
-
-
-
+            if(!(Input.GetKey(Key))){
+                Debug.Log("held");
+                isBeingHeld = false;
+            }
+        }
             if (tailChange.position.y <= judgeLineY)
             {
                 Debug.Log("long finished");
@@ -90,5 +111,5 @@ public class LongNoteMovement : MonoBehaviour
 
             //if (transform.position.y < ) { Destroy(gameObject); }
         }
-    }
+    //}
 }
