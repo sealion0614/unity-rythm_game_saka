@@ -14,7 +14,6 @@ public class NoteMovement : MonoBehaviour
     {
         startY = transform.position.y;
         startTime = Time.time;
-        Debug.Log(gameObject.name + " 的起跑點是：" + startY + "，速度是：" + speed);
     }
 
     void Update()
@@ -23,7 +22,12 @@ public class NoteMovement : MonoBehaviour
         float currentY = startY - (timeAlive * speed);
         transform.position = new Vector3(transform.position.x, currentY, transform.position.z);
 
-        if (transform.position.y < 0f) { Destroy(gameObject); }
+        if (transform.position.y < -540f) 
+        { 
+            Debug.Log("short miss");
+            Destroy(gameObject); 
+            TrackController.shortmissCount++;
+        }
     }
 }
         //if (tailObject != null)

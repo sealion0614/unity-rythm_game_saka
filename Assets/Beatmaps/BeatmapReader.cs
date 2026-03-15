@@ -34,7 +34,7 @@ public class BeatmapReader : MonoBehaviour
     void Start()
     {
         ReadCSV();
-        Debug.Log(notes.Count + " 個音符！");
+        //Debug.Log(notes.Count + " 個音符！");
         if (music != null)
         {
             music.PlayDelayed(fallTime); 

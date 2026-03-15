@@ -17,7 +17,6 @@ public class ShortNoteManager : MonoBehaviour
     {
         if (Input.GetKeyDown(trackKey))
         {
-            //Debug.Log("1 pressed");
             SpawnNote();
             StartCoroutine(RealTimeWait(1f));
         }
