@@ -40,6 +40,18 @@ public class BeatmapReader : MonoBehaviour
             music.PlayDelayed(fallTime); 
             isPlaying = true;
         }
+        if (shortNotePrefab != null)
+        {
+            GameObject dummyShort = Instantiate(shortNotePrefab, new Vector3(0, 10000, 0), Quaternion.identity);
+            dummyShort.SetActive(false);
+            Destroy(dummyShort, 0.1f);
+        }
+        if (longNotePrefab != null) 
+        {
+            GameObject dummyLong = Instantiate(longNotePrefab, new Vector3(0, 10000, 0), Quaternion.identity);
+            dummyLong.SetActive(false); 
+            Destroy(dummyLong, 0.1f);   
+        }
     }
 
     void ReadCSV()
