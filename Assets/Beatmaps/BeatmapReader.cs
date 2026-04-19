@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -33,6 +34,13 @@ public class BeatmapReader : MonoBehaviour
 
     void Start()
     {
+        gameTimer = 0f;
+        StartCoroutine(GameStartSequence());
+    }
+
+    IEnumerator GameStartSequence()
+    {
+        yield return new WaitForSeconds(1.5f);
         ReadCSV();
         //Debug.Log(notes.Count + " 個音符！");
         if (music != null)
@@ -40,18 +48,19 @@ public class BeatmapReader : MonoBehaviour
             music.PlayDelayed(fallTime); 
             isPlaying = true;
         }
-        if (shortNotePrefab != null)
-        {
-            GameObject dummyShort = Instantiate(shortNotePrefab, new Vector3(0, 10000, 0), Quaternion.identity);
-            dummyShort.SetActive(false);
-            Destroy(dummyShort, 0.1f);
-        }
-        if (longNotePrefab != null) 
-        {
-            GameObject dummyLong = Instantiate(longNotePrefab, new Vector3(0, 10000, 0), Quaternion.identity);
-            dummyLong.SetActive(false); 
-            Destroy(dummyLong, 0.1f);   
-        }
+        isPlaying = true;
+        // if (shortNotePrefab != null)
+        // {
+        //     GameObject dummyShort = Instantiate(shortNotePrefab, new Vector3(0, 10000, 0), Quaternion.identity);
+        //     dummyShort.SetActive(false);
+        //     Destroy(dummyShort, 0.1f);
+        // }
+        // if (longNotePrefab != null) 
+        // {
+        //     GameObject dummyLong = Instantiate(longNotePrefab, new Vector3(0, 10000, 0), Quaternion.identity);
+        //     dummyLong.SetActive(false); 
+        //     Destroy(dummyLong, 0.1f);   
+        // }
     }
 
     void ReadCSV()
@@ -125,7 +134,7 @@ public class BeatmapReader : MonoBehaviour
         if (music == null) return;
         if (gameTimer < fallTime)
         {
-            gameTimer += Time.deltaTime;
+            gameTimer += Mathf.Min(Time.deltaTime, 0.03f);
         }
         else
         {
