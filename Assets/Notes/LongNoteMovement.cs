@@ -16,7 +16,6 @@ public class LongNoteMovement : MonoBehaviour
     public Transform headChange;
     //public UnityEngine.UI.Image sr;
     private CanvasGroup cg;
-    public bool missing;
 
     public GameObject headObject;
     public GameObject tailObject;
@@ -45,12 +44,14 @@ public class LongNoteMovement : MonoBehaviour
     }
     void Start()
     {
+        // Color colors = sr.color;
+        // colors.a = 1f;
+        // sr.color = colors;
         startY = transform.localPosition.y;
         startTime = Time.time;
         //Hit = GameObject.FindWithTag("hit");
         judgeLineY = -400f;
         myScale = data.defaultHeight;
-        sr = bodyChange.GetComponent<Image>();
         float myX = transform.localPosition.x;
         if (Mathf.Abs(myX - (-225f)) < 20f)
         {
@@ -81,12 +82,6 @@ public class LongNoteMovement : MonoBehaviour
 
     void Update()
     {
-        
-
-        Color colors = sr.color;
-        colors.a = 1f;
-        sr.color = colors;
-
         float timeAlive = Time.time - startTime;
         float currentY = startY - (timeAlive * speed);
         transform.localPosition = new Vector3(transform.localPosition.x, currentY, transform.localPosition.z);
@@ -200,34 +195,44 @@ public class LongNoteMovement : MonoBehaviour
                 RectTransform bodyRect = bodyChange.GetComponent<RectTransform>();
                 bodyRect.sizeDelta = new Vector2(bodyRect.sizeDelta.x, currentBodyHeight);
             }
-            else
-            {
-                if (headChange != null) headChange.localPosition = new Vector3(headChange.localPosition.x, 0, headChange.localPosition.z);
-                if (bodyChange != null) bodyChange.localPosition = new Vector3(bodyChange.localPosition.x, 0, bodyChange.localPosition.z);
-                if (bodyChange != null && tailChange != null) 
-                {
-                    RectTransform bodyRect = bodyChange.GetComponent<RectTransform>();
-                    bodyRect.sizeDelta = new Vector2(bodyRect.sizeDelta.x, tailChange.localPosition.y);
-                }
-            }
-            if (headChange.localPosition.y <= judgeLineY)
-            {
-                //Debug.Log("change color");
-                colors.a = 0.7f;
-                sr.color = colors;
-            }
-            
+            // if(sr != null)
+            // {
+            //     Color c = sr.color;
+            //     c.a = 1f;
+            //     sr.color = c;
+            // }
+            if (cg != null) cg.alpha = 1f;
         }
-            if (tailChange != null && (currentY + tailChange.localPosition.y) <= judgeLineY)
-            {
-                //Debug.Log("long finished");
-                Destroy(gameObject);
-            }
-
-            else if (transform.position.y < -1000f) 
-            { 
-                Destroy(gameObject); 
-            }
+        else
+        {
+            //if (headChange != null) headChange.localPosition = new Vector3(headChange.localPosition.x, 0, headChange.localPosition.z);
+            //if (bodyChange != null) bodyChange.localPosition = new Vector3(bodyChange.localPosition.x, 0, bodyChange.localPosition.z);
+            // if (bodyChange != null && tailChange != null) 
+            // {
+            //     RectTransform bodyRect = bodyChange.GetComponent<RectTransform>();
+            //     bodyRect.sizeDelta = new Vector2(bodyRect.sizeDelta.x, tailChange.localPosition.y);
+            // }
+            // if (headChange.localPosition.y <= judgeLineY)
+            // {
+            //     Color c = sr.color;
+            //     c.a = isMissed ? 0.5f : 1f;
+            //     sr.color = c;
+            // }
+            if (cg != null) cg.alpha = isMissed ? 0.5f : 1f;
         }
-    //}
+        //if (tailChange != null && (currentY + tailChange.localPosition.y) <= judgeLineY)
+        //{
+            //Debug.Log("long finished");
+            //Destroy(gameObject);
+        //}
+        if (tailAbsoluteY < -540f) 
+        {
+            if (!judged)
+            {
+                Debug.Log("long miss");
+                judged = true;
+            }
+            Destroy(gameObject); 
+        }
+    }
 }
