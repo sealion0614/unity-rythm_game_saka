@@ -4,7 +4,12 @@ using UnityEngine.Rendering;
 
 public class TrackController : MonoBehaviour
 {
+    public static int shortperfectCount = 0;
+    public static int shortmissCount = 0;
+    public static int longperfectCount = 0;
+    public static int longmissCount = 0;
     public KeyCode keyToPress;
+    public float hitWindow = 80f;
     bool canBePressed = true;
     bool isPressing = false;
     bool headTouched = false;
@@ -17,7 +22,10 @@ public class TrackController : MonoBehaviour
     GameObject longTail;
     void Start()
     {
-        
+        shortperfectCount = 0;
+        shortmissCount = 0;
+        longperfectCount = 0;
+        longmissCount = 0;
     }
 
 
@@ -64,61 +72,43 @@ public class TrackController : MonoBehaviour
             
             if (canBePressed && Short != null)
             {
-                /*float distance = Mathf.Abs(Short.transform.position.y - transform.position.y);
-                if (distance <= 0.5f) Debug.Log("short: Perfect!!");
-                else if (distance <= 1.2f) Debug.Log("short: Great!");
-                else Debug.Log("short: Good");*/
-                
-                Destroy(Short);
-                Short = null;
-                // canBePressed = false;
-                //Debug.Log("short+1");
+                float distance = Mathf.Abs(Short.transform.localPosition.y - transform.localPosition.y);
+                if(distance <= hitWindow)
+                {
+                    Destroy(Short);
+                    Short = null;
+                    canBePressed = false;
+                    Debug.Log("short perfect");
+                    shortperfectCount++;
+                }
 
             }
         }
-        else if (headTouched && !Input.GetKeyDown(keyToPress) && longHead != null)
+        // if (Input.GetKeyUp(keyToPress))
+        // {
+        //     if (isPressing)
+        //     {
+        //         if (tailTouched)
+        //         {
+        //             Destroy(longTail.transform.parent.gameObject);
+        //             //Debug.Log("tailHead+1");
+        //         }
+        //         isPressing= false;
+        //         if (longTail != null)
+        //         {
+        //             Destroy(longTail.transform.parent.gameObject);
+        //             tailTouched = false;
+        //         }
+
+        //     }
+
+        // }
+        if (Input.GetKeyDown(KeyCode.Space))
         {
-            Debug.Log("miss");
-            if (colorScript != null)
+            if(keyToPress == KeyCode.D)
             {
-                colorScript.missing = true;
+                Debug.Log($"========== 遊戲結算 ==========\nshortPerfect 總數: {shortperfectCount}\nshortMiss 總數: {shortmissCount}\nlongPerfect 總數: {longperfectCount}\nlongMiss 總數: {longmissCount}\n==============================");
             }
-        }
-        if (Input.GetKeyUp(keyToPress))
-        {
-            if (isPressing)
-            {
-                if (tailTouched && longTail != null)
-                {
-                    /*float distance = Mathf.Abs(longHead.transform.position.y - transform.position.y);
-                    if (distance <= 0.5f) Debug.Log("longTail: Perfect!!");
-                    else if (distance <= 1.2f) Debug.Log("longTail: Great!");
-                    else Debug.Log("longTail: Good");*/
-                    GameObject parent = longTail.transform.parent.gameObject;
-                    Destroy(parent);
-                    longTail = null;
-                    //Debug.Log("tailHead+1");
-                }
-                else
-                {
-                    Debug.Log("miss");
-                    if (colorScript != null)
-                    {
-                        colorScript.missing = true;
-                    }
-
-                }
-                isPressing = false;
-                if (longTail != null)
-                {
-                    Destroy(longTail.transform.parent.gameObject);
-                    tailTouched = false;
-                }
-
-            }
-            
-            
-
         }
     }
 
@@ -128,19 +118,19 @@ public class TrackController : MonoBehaviour
         {
             canBePressed = true;
             Short= other.gameObject;
-            Debug.Log("short touched");
+            //Debug.Log("short touched");
         }
         else if (other.CompareTag("D_Head"))
         {
             headTouched = true;
             longHead = other.gameObject;
-            Debug.Log("longHead touched");
+            //Debug.Log("longHead touched");
         }
         else if (other.CompareTag("D_Tail"))
         {
             tailTouched = true;
             longTail = other.gameObject;
-            Debug.Log("longTail touched");
+            //Debug.Log("longTail touched");
         }
         else if (other.CompareTag("D_Body"))
         {
@@ -155,19 +145,17 @@ public class TrackController : MonoBehaviour
         if (other.CompareTag("D_Key"))
         {
             //canBePressed = false;
-            Debug.Log("short out");
+            //Debug.Log("short out");
         }
         if (other.CompareTag("D_Head"))
         {
             headTouched = false;
-            Debug.Log("Head out");
-            longHead = null;
+            //Debug.Log("Head out");
         }
         if (other.CompareTag("D_Tail"))
         {
             tailTouched = false;
-            Debug.Log("Tail out");
-            longHead = null;
+            //Debug.Log("Tail out");
         }
 
     }

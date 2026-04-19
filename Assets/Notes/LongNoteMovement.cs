@@ -9,12 +9,13 @@ using System.Collections.Generic;
 public class LongNoteMovement : MonoBehaviour
 {
     public float speed = 500f;
-    public float tailHitWindow = 80f;
+    public float HitWindow = 80f;
     public bool isBeingHeld = false;
     public Transform bodyChange;
     public Transform tailChange;
     public Transform headChange;
-    public UnityEngine.UI.Image sr;
+    //public UnityEngine.UI.Image sr;
+    private CanvasGroup cg;
     public bool missing;
 
     public GameObject headObject;
@@ -34,6 +35,9 @@ public class LongNoteMovement : MonoBehaviour
     private float startY;
     private float startTime;
     private float originalLength;
+    private bool judged = false;
+    private bool isMissed = false;
+    private bool lengthCalculated = false;
 
     public void SetMyScale(float s)
     {
@@ -41,18 +45,12 @@ public class LongNoteMovement : MonoBehaviour
     }
     void Start()
     {
-        
-        
-        missing = false;
         startY = transform.localPosition.y;
         startTime = Time.time;
         //Hit = GameObject.FindWithTag("hit");
         judgeLineY = -400f;
         myScale = data.defaultHeight;
         sr = bodyChange.GetComponent<Image>();
-        Color colors = sr.color;
-        colors.a = 1f;
-        sr.color = colors;
         float myX = transform.localPosition.x;
         if (Mathf.Abs(myX - (-225f)) < 20f)
         {
@@ -72,9 +70,12 @@ public class LongNoteMovement : MonoBehaviour
         }
         //Debug.Log(gameObject.name + " 的起跑點是：" + startY + "，速度是：" + speed);
         //bodySpriteUnitHeight = sr.sprite.bounds.size.y;
-        if (bodyChange != null) 
-        {
-            originalLength = bodyChange.GetComponent<RectTransform>().sizeDelta.y;
+        // if (bodyChange != null) {
+        //     sr = bodyChange.GetComponent<Image>();
+        // }
+        cg = GetComponent<CanvasGroup>();
+        if (cg == null) {
+            cg = gameObject.AddComponent<CanvasGroup>();
         }
     }
 
@@ -82,25 +83,19 @@ public class LongNoteMovement : MonoBehaviour
     {
         
 
-        
-        if (missing)
-        {
-            Debug.Log("change color");
-            Color colors = sr.color;
-            colors.a = 0.7f;
-            sr.color = colors;
-            isBeingHeld = false;
-        }
-        
+        Color colors = sr.color;
+        colors.a = 1f;
+        sr.color = colors;
 
         float timeAlive = Time.time - startTime;
         float currentY = startY - (timeAlive * speed);
         transform.localPosition = new Vector3(transform.localPosition.x, currentY, transform.localPosition.z);
-        float tailAbsoluteY = currentY;
-        if (tailChange != null) 
+        if (!lengthCalculated && tailChange != null)
         {
-            tailAbsoluteY = currentY + tailChange.localPosition.y;
+            originalLength = Mathf.Abs(tailChange.localPosition.y * transform.localScale.y);
+            if (originalLength > 10f) lengthCalculated = true;
         }
+        float tailAbsoluteY = currentY + originalLength;
         //if (!hasInitialized && headChange.transform.position.y <= judgeLineY)
         //{
         //    initialBodyLocalPos = tailChange.position.y - judgeLineY;
@@ -112,27 +107,80 @@ public class LongNoteMovement : MonoBehaviour
         //if (hasInitialized)
         //{
         //Debug.Log(isBeingHeld);
-        if(Key != KeyCode.None)
+        if(Key != KeyCode.None && !isMissed)
         {
-            if (Input.GetKeyUp(Key))
+            if (!isBeingHeld)
             {
-                if (isBeingHeld && Mathf.Abs(tailAbsoluteY - judgeLineY) <= tailHitWindow)
+                if (Input.GetKeyDown(Key))
                 {
-                    Destroy(gameObject);
-                    return;
+                    float headDistance = Mathf.Abs(currentY - judgeLineY);
+                    if (headDistance <= HitWindow) 
+                    {
+                        isBeingHeld = true;
+                    }
                 }
-                else
+                else if (currentY < (judgeLineY - HitWindow))
                 {
+                    isMissed = true;
+                    if (!judged)
+                    {
+                        Debug.Log("long miss");
+                        judged = true;
+                        TrackController.longmissCount++;
+                    }
+                }
+            }
+            else
+            {
+                if (Input.GetKeyUp(Key))
+                {
+                    float distance = Mathf.Abs(tailAbsoluteY - judgeLineY);
+                    float tailDistance = Mathf.Abs(tailAbsoluteY - judgeLineY);
+                    if(tailDistance <= HitWindow)
+                    {
+                        if (!judged)
+                        {
+                            Debug.Log("long perfact");
+                            judged = true;
+                            TrackController.longperfectCount++;
+                        }
+                        Destroy(gameObject);
+                        return;
+                    }
+                    else
+                    {
+                        isMissed = true;
+                        isBeingHeld = false;
+                        if (!judged)
+                        {
+                            Debug.Log("long miss");
+                            judged = true;
+                            TrackController.longmissCount++;
+                        }
+                    }
+                }
+                else if (!Input.GetKey(Key))
+                {
+                    isMissed = true;
                     isBeingHeld = false;
+                    if (!judged)
+                    {
+                        Debug.Log("long miss");
+                        judged = true;
+                        TrackController.longmissCount++;
+                    }
                 }
-            }
-            else if (!Input.GetKey(Key))
-            {
-                isBeingHeld = false;
-            }
-            if (isBeingHeld && tailAbsoluteY < (judgeLineY - tailHitWindow))
-            {
-                isBeingHeld = false;
+                else if (tailAbsoluteY < (judgeLineY - HitWindow))
+                {
+                    isMissed = true;
+                    if (!judged)
+                    {
+                        Debug.Log("long miss");
+                        judged = true;
+                        TrackController.longmissCount++;
+                    }
+                    Destroy(gameObject);
+                }
             }
         }
         if (isBeingHeld && currentY <= judgeLineY)
@@ -162,14 +210,20 @@ public class LongNoteMovement : MonoBehaviour
                     bodyRect.sizeDelta = new Vector2(bodyRect.sizeDelta.x, tailChange.localPosition.y);
                 }
             }
-            
+            if (headChange.localPosition.y <= judgeLineY)
+            {
+                //Debug.Log("change color");
+                colors.a = 0.7f;
+                sr.color = colors;
+            }
             
         }
-            if (tailChange != null && (currentY + tailChange.localPosition.y) <= judgeLineY&&isBeingHeld&&!missing)
+            if (tailChange != null && (currentY + tailChange.localPosition.y) <= judgeLineY)
             {
                 //Debug.Log("long finished");
                 Destroy(gameObject);
             }
+
             else if (transform.position.y < -1000f) 
             { 
                 Destroy(gameObject); 
