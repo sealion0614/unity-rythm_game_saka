@@ -205,13 +205,13 @@ public class LongNoteMovement : MonoBehaviour
         }
         else
         {
-            if (headChange != null) headChange.localPosition = new Vector3(headChange.localPosition.x, 0, headChange.localPosition.z);
-            if (bodyChange != null) bodyChange.localPosition = new Vector3(bodyChange.localPosition.x, 0, bodyChange.localPosition.z);
-            if (bodyChange != null && tailChange != null) 
-            {
-                RectTransform bodyRect = bodyChange.GetComponent<RectTransform>();
-                bodyRect.sizeDelta = new Vector2(bodyRect.sizeDelta.x, tailChange.localPosition.y);
-            }
+            //if (headChange != null) headChange.localPosition = new Vector3(headChange.localPosition.x, 0, headChange.localPosition.z);
+            //if (bodyChange != null) bodyChange.localPosition = new Vector3(bodyChange.localPosition.x, 0, bodyChange.localPosition.z);
+            // if (bodyChange != null && tailChange != null) 
+            // {
+            //     RectTransform bodyRect = bodyChange.GetComponent<RectTransform>();
+            //     bodyRect.sizeDelta = new Vector2(bodyRect.sizeDelta.x, tailChange.localPosition.y);
+            // }
             // if (headChange.localPosition.y <= judgeLineY)
             // {
             //     Color c = sr.color;
